@@ -1,0 +1,8 @@
+create table testUserTable(
+    id int not null auto_increment,
+    password varchar(20) not null,
+    name varchar(30) not null,
+    phone varchar(15) not null,
+    email varchar(20),
+    constraint pk primary key(id)
+);
