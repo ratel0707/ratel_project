@@ -6,3 +6,37 @@ create table testUserTable(
     email varchar(20),
     constraint pk primary key(id)
 );
+
+create table member(
+    id int auto_increment,      //PK, 대체키
+    memberId varchar(30) not null,  //UK, 자연키
+    password varchar(30),
+    nickname varchar(20),
+    email varchar(30),
+    phone varchar(20),
+    role varchar(10) default 'user',
+
+    primary key (id),
+    unique key (memberId)
+);
+
+create table post(
+    id int auto_increment, //PK, 대체키 -> applicatoin에서도 이거 그냥 사용하자
+    memberId int,
+    title varchar(30),
+    content varchar(50),
+
+    primary key(id),
+    foreign key(memberId) references member(id) on delete set null
+);
+
+create table reply(
+    id int auto_increment, //PK, 대체키 -> applicatoin에서도 이거 그냥 사용하자
+    postId int,
+    memberId int,
+    content varchar(50),
+
+    primary key(id),
+    foreign key(postId) references post(id) on delete cascade,
+    foreign key(memberId) references member(id) on delete set null
+);

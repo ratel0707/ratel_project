@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import study.ratelsproject.domain.User;
 import study.ratelsproject.service.UserService;
 
-@RestController("/user")
+@RestController
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;

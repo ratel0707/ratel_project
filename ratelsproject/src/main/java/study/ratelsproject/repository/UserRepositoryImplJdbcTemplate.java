@@ -1,5 +1,7 @@
 package study.ratelsproject.repository;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -10,12 +12,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-@Repository
-public class UserRepositoryImpl implements UserRepository {
 
-    public DriverManagerDataSource dataSource;
-    public JdbcTemplate jdbcTemplate;
-    public UserRepositoryImpl() {
+@Repository
+//결국 service, repository를 <비즈니스 로직, DB접근>에 대한 책임(관심)을 분리해놨기에,
+//따로 DB를 mysql에서 mongoDB로 바꾼다해고 reposotory만 수정하면됨.
+//근데 이걸 더 추상화해서 좀더 OCP원칙에 맞게 바꾸는게 가능한가?
+
+@Primary
+public class UserRepositoryImplJdbcTemplate implements UserRepository {
+
+    public final JdbcTemplate jdbcTemplate;
+    public UserRepositoryImplJdbcTemplate() {
         //spring bean으로 등록되는 생성자에서 db연결시 예외 발생하는 경우
         //어떻게 처리해야 하지??, 예외 발생하면 아예 bean으로 등록이 안되나?
         //아니면 빌드 실패가 되나? -> try-catch로 예외 발생해도 그냥 서버 동작하는데,
