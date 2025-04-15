@@ -1,12 +1,13 @@
 package study.ratelsproject.repository.memberRepository;
 
 import org.springframework.stereotype.Repository;
+import study.ratelsproject.dao.MemberDao;
 import study.ratelsproject.domain.Member;
 
 @Repository
 public class MemberRepositoryImplJpa implements MemberRepository {
     @Override
-    public int createMember(Member member) {
+    public int createMember(MemberDao member) {
         return 0;
     }
 
@@ -21,7 +22,7 @@ public class MemberRepositoryImplJpa implements MemberRepository {
     }
 
     @Override
-    public int updateMember(int id, Member member) {
+    public int updateMember(int id, MemberDao member) {
         return 0;
     }
 }

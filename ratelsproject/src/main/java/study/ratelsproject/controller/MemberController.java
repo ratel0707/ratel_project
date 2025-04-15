@@ -1,16 +1,26 @@
 package study.ratelsproject.controller;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import study.ratelsproject.domain.Member;
+import study.ratelsproject.dto.requestDto.MemberSignIn;
+import study.ratelsproject.dto.responseDto.MemberInfo;
 import study.ratelsproject.service.memberService.MemberService;
+import study.ratelsproject.util.Response;
+//import study.ratelsproject.service.memberService.MemberService;
+
+import java.net.BindException;
 
 @RestController
 @RequestMapping("/member")
 @RequiredArgsConstructor
 //URL(URI) 매핑과 비즈니스 로직을 serviec와 분리한거라고 보면 될듯
 public class MemberController {
+    //private final MemberService memberService;
     private final MemberService memberService;
 
     @GetMapping("/test")
@@ -18,8 +28,16 @@ public class MemberController {
         return "test";
     }
 
-    @GetMapping("/read-memberById")
-    public Member getMemberById(@RequestParam("id") int id){
+    @GetMapping("/test2")
+    public ResponseEntity<Response<MemberSignIn>> test2() {
+        MemberSignIn memberSignIn = new MemberSignIn("admin", "admin");
+        return ResponseEntity.ok().body(new Response<>(memberSignIn, 1));
+    }
+
+    //http method (GET, PUT, POST, PATCH, DELETE)
+    @GetMapping("/{id}")
+    public Member getMemberById(@PathVariable("id") int id){
+        System.out.println("getMemberById in Controller");
         Member member = memberService.getMemberById(id);
         if(member == null){
             return new Member()
@@ -29,14 +47,12 @@ public class MemberController {
         return member;
     }
 
-    @GetMapping("/read-memberByMemberId")
-    public String getMemberById(@RequestParam("memberId") String memberId){
-        //
-        return "OK";
-    }
-
-    @PostMapping("/create-member")
-    public String createMember(@RequestBody Member member){
+    //FE -> BE XXXXRequestDto / ResponseDto
+    //BE
+    //Controller -> Service XXXDto
+    @PostMapping("/new")
+    //ResponseEntity
+    public  String createMember(@RequestBody Member member){
         int res = memberService.addMember(member);
         if(res == -1){
             return "FAIL...";
@@ -44,4 +60,29 @@ public class MemberController {
 
         return "OK";
     }
+
+    //ResponseUtil.
+    @PostMapping("/signIn")
+    public ResponseEntity<Response<MemberInfo>> signIn(@RequestBody MemberSignIn member, HttpSession session){
+        System.out.println("id: " + member.id());
+        System.out.println("password: " + member.password());
+        Member res = memberService.checkMemberSignInValidity(member);
+
+        if(res!=null){
+            System.out.println("success");
+            session.setAttribute("member", member);
+            //Member to MemberInfo
+            MemberInfo memberInfo = new MemberInfo(res.getMemberId(), res.getNickname(), res.getEmail(), res.getRole());
+            //
+            return ResponseEntity.ok().body(new Response<>(memberInfo, 1));
+        }else{
+            System.out.println("fail");
+            return ResponseEntity.ok().body(new Response<>(null, 1));
+        }
+    }
+    //Spring에서 지원해주는 Http 요청, 응답을 손쉽게 조작 및 생성할 있게 해주는 객체
+    //듈다 HttpEntity를 상속함
+    //RequestEntity<?>
+    //ResponseEntity<?>
 }
+

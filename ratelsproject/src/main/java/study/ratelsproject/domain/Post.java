@@ -32,4 +32,10 @@ public class Post {
     public Post build(){
         return this;
     }
+
+    public void info(){
+        System.out.println("memberId: " + memberId);
+        System.out.println("title: " + title);
+        System.out.println("content: " + content);
+    }
 }

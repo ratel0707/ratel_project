@@ -5,10 +5,10 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DbConnectionFactory {
+public class DbConnectionFactoryJdbcTemplate {
     private final JdbcTemplate jdbcTemplate;
 
-    public DbConnectionFactory() {
+    public DbConnectionFactoryJdbcTemplate() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/testdb");

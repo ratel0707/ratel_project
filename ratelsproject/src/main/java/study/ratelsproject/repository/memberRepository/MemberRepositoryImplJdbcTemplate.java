@@ -10,6 +10,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import study.ratelsproject.dao.MemberDao;
 import study.ratelsproject.domain.Member;
 
 import java.sql.PreparedStatement;
@@ -23,7 +24,26 @@ import java.util.Objects;
 @Primary
 @RequiredArgsConstructor
 public class MemberRepositoryImplJdbcTemplate implements MemberRepository {
+    @Override
+    public int createMember(MemberDao member) {
+        return 0;
+    }
 
+    @Override
+    public Member selectUserByMemberId(int id) {
+        return null;
+    }
+
+    @Override
+    public int deleteUserByMemberId(int id) {
+        return 0;
+    }
+
+    @Override
+    public int updateMember(int id, MemberDao member) {
+        return 0;
+    }
+    /*
     public final JdbcTemplate jdbcTemplate;
 
     @Override
@@ -64,14 +84,14 @@ public class MemberRepositoryImplJdbcTemplate implements MemberRepository {
 
     @Override
     public Member selectUserByMemberId(int id) {
-
+        System.out.println("selectUserByMemberId JDBCTemplate");
         String sql = "select * from member where id = ?";
         List<Member> list = jdbcTemplate.query(sql, new RowMapper<Member>() {
             @Override
             public Member mapRow(ResultSet rs, int rowNum) throws SQLException {
                 return new Member()
                         .id(rs.getInt("id"))
-                        .nickname(rs.getString("name"))
+                        .nickname(rs.getString("nickname"))
                         .password(rs.getString("password"))
                         .email(rs.getString("email"))
                         .phone(rs.getString("phone"))
@@ -113,4 +133,6 @@ public class MemberRepositoryImplJdbcTemplate implements MemberRepository {
 
         return 0;
     }
+
+     */
 }

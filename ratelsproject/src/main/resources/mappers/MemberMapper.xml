@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="study.ratelsproject.repository.memberRepository.MemberRepositoryMyBatis">
+    <select id="selectMemberById" parameterType="int" resultType="study.ratelsproject.domain.Member">
+        select *
+        from member
+        where id = #{id}
+    </select>
+
+    <delete id="deleteMemberById" parameterType="int">
+        delete
+        from member
+        where id = #{id}
+    </delete>
+
+    <select id="selectMemberByMemberId" parameterType="String" resultType="study.ratelsproject.domain.Member">
+        select *
+        from member
+        where memberId = #{memberId}
+    </select>
+
+</mapper>

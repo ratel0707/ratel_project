@@ -1,11 +1,9 @@
-package study.ratelsproject.domain;
+package study.ratelsproject.dao;
 
-import lombok.Getter;
 
-//domain 과 model의 차이
+import study.ratelsproject.domain.Member;
 
-@Getter
-public class Member {
+public class MemberDao {
     private int id;
     private String memberId;
     private String password;
@@ -15,42 +13,42 @@ public class Member {
     private String role;
 
     //Implement builder pattern
-    public Member id(int _id) {
+    public MemberDao id(int _id) {
         this.id = _id;
         return this;
     }
 
-    public Member memberId(String _memberId) {
+    public MemberDao memberId(String _memberId) {
         this.memberId = _memberId;
         return this;
     }
 
-    public Member password(String _password) {
+    public MemberDao password(String _password) {
         this.password = _password;
         return this;
     }
 
-    public Member nickname(String _nickname) {
+    public MemberDao nickname(String _nickname) {
         this.nickname = _nickname;
         return this;
     }
 
-    public Member email(String _email) {
+    public MemberDao email(String _email) {
         this.email = _email;
         return this;
     }
 
-    public Member phone(String _phone) {
+    public MemberDao phone(String _phone) {
         this.phone = _phone;
         return this;
     }
 
-    public Member role(String _role) {
+    public MemberDao role(String _role) {
         this.role = _role;
         return this;
     }
 
-    public Member build(){
+    public MemberDao build(){
         return this;
     }
 
