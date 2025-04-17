@@ -37,8 +37,10 @@ public class MemberServiceImplMyBatis implements MemberService {
     @Override
     public Member checkMemberSignInValidity(MemberSignIn member) {
         Member memberRes = memberMapper.selectMemberByMemberId(member.id());
-        //System.out.println(memberRes);
-       return memberRes;
-        //return (memberRes != null) && member.password().equals(memberRes.getPassword());
+        //memberRes.info();
+        if((memberRes != null) && member.password().equals(memberRes.getPassword())) {
+            return memberRes;
+        }
+        return null;
     }
 }

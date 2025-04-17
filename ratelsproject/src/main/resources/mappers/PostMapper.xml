@@ -25,4 +25,9 @@
         delete from post
         where id = #{id}
     </delete>
+
+    <insert id="insertPostByMemberId" parameterType="study.ratelsproject.dao.PostDao">
+        insert into post(memberId, title, content)
+        values (#{memberId}, #{title}, #{content})
+    </insert>
 </mapper>

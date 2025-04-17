@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import study.ratelsproject.domain.Member;
 import study.ratelsproject.dto.requestDto.MemberSignIn;
 import study.ratelsproject.dto.responseDto.MemberInfo;
+import study.ratelsproject.dto.sessionDto.MemberSession;
 import study.ratelsproject.service.memberService.MemberService;
 import study.ratelsproject.util.Response;
 //import study.ratelsproject.service.memberService.MemberService;
@@ -53,7 +54,9 @@ public class MemberController {
     @PostMapping("/new")
     //ResponseEntity
     public  String createMember(@RequestBody Member member){
-        int res = memberService.addMember(member);
+        int res = 1;
+        //repository에서 insert 구현
+        //int res = memberService.addMember(member);
         if(res == -1){
             return "FAIL...";
         }
@@ -70,15 +73,33 @@ public class MemberController {
 
         if(res!=null){
             System.out.println("success");
-            session.setAttribute("member", member);
             //Member to MemberInfo
-            MemberInfo memberInfo = new MemberInfo(res.getMemberId(), res.getNickname(), res.getEmail(), res.getRole());
-            //
+            MemberInfo memberInfo = new MemberInfo(res.getId(), res.getNickname(), res.getEmail(), res.getRole());
+            //Member to MemberSession
+            MemberSession memberSession = new MemberSession(res.getId(), res.getMemberId());
+
+            //seeeion에 저장
+            session.setAttribute("member", memberSession);
+            System.out.println("session: " + memberSession);
             return ResponseEntity.ok().body(new Response<>(memberInfo, 1));
         }else{
             System.out.println("fail");
             return ResponseEntity.ok().body(new Response<>(null, 1));
         }
+    }
+
+    @PostMapping("/signOut")
+    public ResponseEntity<Response<Void>> signOut(HttpSession session){
+        MemberSession memberSession = (MemberSession) session.getAttribute("member");
+        System.out.println("session in signOut: " + memberSession);
+        if(session.getAttribute("member") != null) {
+            //클라에서 로그인 상태에서 -> 로그 아웃 요청
+            session.removeAttribute("member");
+            System.out.println("success sign out");
+        }else {
+            System.out.println("fail sign out");
+        }
+        return ResponseEntity.ok().body(new Response<>(null, 1));
     }
     //Spring에서 지원해주는 Http 요청, 응답을 손쉽게 조작 및 생성할 있게 해주는 객체
     //듈다 HttpEntity를 상속함
