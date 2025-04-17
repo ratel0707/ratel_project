@@ -1,12 +1,15 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext} from "react";
 import { useNavigate } from "react-router-dom";
+import { SignInContext } from "../context/SignInContext";
 
 function RegisterPostPage(){
     const nav = useNavigate();
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [submitBtnPossible, setSubmitBtnPossible] = useState(false);
+
+    const {signInSession, setSignInSession} = useContext(SignInContext);
 
     const titleHandler = (e)=>{
         setTitle(e.target.value);
@@ -26,14 +29,24 @@ function RegisterPostPage(){
         }
     };
 
+    var url = 'http://localhost:8080/post/new';
+    if(setSignInSession){
+        url = 'http://localhost:8080/post/new/member';
+    }
+
     const submitBtnClickHandler = async (e)=>{
         //e.preventDefault();
         
         //로그인 없이, 그냥 바로 게시글 작성시에 사용되는 익명 공용 memberId = 1
         var memberId = 1;
+        if(signInSession!=null){
+            memberId = setSignInSession.id;
+        }
+
         try{
-            const response = await fetch('http://localhost:8080/post/new', {
+            const response = await fetch(url, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-type': 'application/json',
                 },

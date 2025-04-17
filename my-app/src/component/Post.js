@@ -1,10 +1,10 @@
 import React from "react";
 
-function Post(props){
+function Post({post}){
     return (
         <div>
-            <p>{props.title}</p>
-            <p>{props.content}</p>
+            <p>{post.title}</p>
+            <p>{post.content}</p>
         </div>
     );
 }
